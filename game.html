@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Reaction Game</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        button { padding: 10px 20px; font-size: 16px; }
+        #result { margin-top: 20px; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <h1>กดปุ่มให้เร็วที่สุด!</h1>
+    <button id="startBtn">เริ่มเกม</button>
+    <p id="result"></p>
+    <script>
+        const startBtn = document.getElementById('startBtn');
+        const result = document.getElementById('result');
+        let startTime;
+        let isGameRunning = false;
+
+        startBtn.addEventListener('click', () => {
+            if (isGameRunning) {
+                // คำนวณเวลาในการตอบสนอง
+                const endTime = Date.now();
+                const reactionTime = (endTime - startTime) / 1000;
+                result.textContent = `คุณตอบสนองในเวลา ${reactionTime.toFixed(2)} วินาที!`;
+                startBtn.textContent = 'เริ่มเกมใหม่';
+                isGameRunning = false;
+                return;
+            }
+
+            // เริ่มเกมใหม่
+            startBtn.disabled = true;
+            result.textContent = 'รอ...';
+            startBtn.textContent = 'เตรียมพร้อม...';
+            setTimeout(() => {
+                startTime = Date.now();
+                result.textContent = 'กดปุ่มเดี๋ยวนี้!';
+                startBtn.textContent = 'กดเดี๋ยวนี้!';
+                startBtn.disabled = false;
+                isGameRunning = true;
+            }, Math.random() * 3000 + 2000); // 2-5 วินาที
+        });
+    </script>
+</body>
+</html>
